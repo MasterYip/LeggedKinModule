@@ -11,13 +11,9 @@
 #include "Eigen/Dense"
 // Pinocchio
 #include "pinocchio/parsers/urdf.hpp"
-// #include "pinocchio/algorithm/joint-configuration.hpp"
-// #include "pinocchio/algorithm/geometry.hpp"
-// #include <pinocchio/algorithm/rnea.hpp>
 #include <pinocchio/algorithm/jacobian.hpp>
 #include <pinocchio/algorithm/frames.hpp>
 /* internal project header files */
-#include "ikfast_leg_lib.h"
 #include "config.h"
 
 using namespace ikfast_leg;

@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.0.2)
 
 project(LeggedKinModule)
 
+# Settings
+set(BUILD_GTESTING OFF)
+
 set(CMAKE_CXX_STANDARD 11)
 
 find_package(pinocchio REQUIRED)
@@ -20,20 +23,14 @@ endforeach()
 
 message(STATUS "IKFAST_LIB_NAME: ${IKFAST_LIB_NAME} | URDF_PATH: ${URDF_PATH}")
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/core/config.h.in ${CMAKE_CURRENT_SOURCE_DIR}/core/config.h)
-
 set(IKFAST_DIR ${CMAKE_CURRENT_SOURCE_DIR}/config/${IKFAST_LIB_NAME})
-set(BUILD_GTESTING OFF)
-
 file(GLOB_RECURSE SOURCES core/*.cpp)
-list(APPEND INCLUDES core examples ${pinocchio_INCLUDE_DIRS} ${IKFAST_DIR})
+list(APPEND INCLUDES core config ${pinocchio_INCLUDE_DIRS} ${IKFAST_DIR})
 
 add_subdirectory(${IKFAST_DIR})
-
 add_library(${PROJECT_NAME} ${SOURCES})
 target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDES})
 target_link_libraries(${PROJECT_NAME} PUBLIC pinocchio::pinocchio ${IKFAST_LIB_NAME})
-
-
 
 
 # Tests
