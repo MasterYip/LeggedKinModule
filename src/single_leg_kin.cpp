@@ -23,9 +23,13 @@ bool SingleLegKin::checkJointLimits(const Eigen::Vector3d &joints)
 
 bool SingleLegKin::inverseKin(const Eigen::Vector3d &pos, vector<Eigen::Vector3d> &sols)
 {
-    vector<double> target = {pos[0] + origin_calib_[0], pos[1] + origin_calib_[1], pos[2] + origin_calib_[2],
-                             ik_approx_point_[0] + origin_calib_[0], ik_approx_point_[1] + origin_calib_[1], ik_approx_point_[2] + origin_calib_[2]};
-    vector<vector<double>> ret = IKFast_trans3D(target, true);
+    Eigen::Matrix3d mirror = Eigen::Matrix3d::Zero();
+    mirror.diagonal() = mirror_offset_;
+    Eigen::Vector3d target = mirror * rot_offset_.transpose() * (pos - pos_offset_) + origin_calib_;
+    Eigen::Vector3d approx = mirror * rot_offset_.transpose() * (ik_approx_point_ - pos_offset_) + origin_calib_;
+    vector<double> target_vec = {target[0], target[1], target[2], approx[0], approx[1], approx[2]};
+
+    vector<vector<double>> ret = IKFast_trans3D(target_vec, true);
     if (ret.size() == 0)
     {
         return false;
@@ -55,8 +59,10 @@ bool SingleLegKin::inverseKinConstraint(const Eigen::Vector3d &pos, vector<Eigen
 bool SingleLegKin::forwardKin(const Eigen::Vector3d &joints, Eigen::Vector3d &pos)
 {
     pinocchio::forwardKinematics(model_, data_, joints);
+    Eigen::Matrix3d mirror = Eigen::Matrix3d::Zero();
+    mirror.diagonal() = mirror_offset_;
     pos = pinocchio::updateFramePlacement(model_, data_, model_.getFrameId(end_effector_name_)).translation();
-    pos -= origin_calib_;
+    pos = rot_offset_ * mirror * (pos - origin_calib_) + pos_offset_;
     return true;
 }
 

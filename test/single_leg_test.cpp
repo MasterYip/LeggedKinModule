@@ -6,8 +6,8 @@ SingleLegKin buildElSpiderAir()
     // Eigen::Vector3d origin_calib = {0.0, 0.0, 0.0};
     Eigen::Vector3d origin_calib = {0.3, -0.08, 0.011};
     Eigen::Vector3d mirror_offset = {1.0, 1.0, 1.0};
-    Eigen::Vector3d pos_offset = {0.0, 0.0, 0.0};
     Eigen::Matrix3d rot_offset = Eigen::Matrix3d::Identity();
+    Eigen::Vector3d pos_offset = {0.0, 0.0, 0.0};
     Eigen::VectorXd joint_limits;
     joint_limits.resize(6);
     joint_limits << -0.785, 0.785, -0.5233, 3.14, -0.6978, 3.925;

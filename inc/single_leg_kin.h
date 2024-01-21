@@ -27,17 +27,15 @@ private:
     pinocchio::Model model_;
     pinocchio::Data data_;
     string end_effector_name_ = "RF_FOOT";
-    // Origin Calib
-    // urdf origin may not be [0,0,0]
-    Eigen::Vector3d origin_calib_ = Eigen::Vector3d::Zero();
-    // Offsets (in order: mirror, pos, rot)
-    Eigen::Vector3d mirror_offset_ = Eigen::Vector3d::Ones();
-    Eigen::Vector3d pos_offset_ = Eigen::Vector3d::Zero();
-    Eigen::Matrix3d rot_offset_ = Eigen::Matrix3d::Identity();
+    // Origin Calib: move the origin of the robot to the origin of the world frame
+    Eigen::Vector3d origin_calib_ = Eigen::Vector3d::Zero(); // robot origin in world frame
+    // Installation Offsets (in order: mirror, rot, pos )
+    Eigen::Vector3d mirror_offset_ = Eigen::Vector3d::Ones();  // Mirror operation
+    Eigen::Matrix3d rot_offset_ = Eigen::Matrix3d::Identity(); // Rotation operation
+    Eigen::Vector3d pos_offset_ = Eigen::Vector3d::Zero();     // Translation operation
     // Joint limits (default: [-pi, pi], order: [min, max, min, max, min, max])
     Eigen::VectorXd joint_limits_ = Eigen::VectorXd::Zero(6);
-
-    // IK Approx point
+    // IKFast Approx point (usually the middle point of the joint limits)
     Eigen::Vector3d ik_approx_point_ = Eigen::Vector3d::Zero();
 
 public:
