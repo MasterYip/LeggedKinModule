@@ -55,6 +55,10 @@ public:
     {
         return legs_[leg_index].inverseKinConstraint(pos, sols);
     };
+    bool inverseKinConstraint(const Eigen::Vector3d &pos, Eigen::Vector3d &sol, uint leg_index)
+    {
+        return legs_[leg_index].inverseKinConstraint(pos, sol);
+    };
     bool forwardKin(const Eigen::Vector3d &joints, Eigen::Vector3d &pos, uint leg_index)
     {
         return legs_[leg_index].forwardKin(joints, pos);
