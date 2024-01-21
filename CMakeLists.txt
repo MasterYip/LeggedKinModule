@@ -10,7 +10,7 @@ set(CMAKE_CXX_STANDARD 11)
 find_package(pinocchio REQUIRED)
 
 # get folder name of ikfast library (in config/)
-file(GLOB CONFIG_DIRS config/*)
+file(GLOB CONFIG_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/config/*)
 foreach(CONFIG_DIR ${CONFIG_DIRS})
     get_filename_component(CONFIG_DIR_EXT ${CONFIG_DIR} EXT)
     if (CONFIG_DIR_EXT STREQUAL ".urdf")
@@ -25,11 +25,12 @@ message(STATUS "IKFAST_LIB_NAME: ${IKFAST_LIB_NAME} | URDF_PATH: ${URDF_PATH}")
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/core/config.h.in ${CMAKE_CURRENT_SOURCE_DIR}/core/config.h)
 set(IKFAST_DIR ${CMAKE_CURRENT_SOURCE_DIR}/config/${IKFAST_LIB_NAME})
 file(GLOB_RECURSE SOURCES core/*.cpp)
-list(APPEND INCLUDES core config ${pinocchio_INCLUDE_DIRS} ${IKFAST_DIR})
+list(APPEND INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/core ${CMAKE_CURRENT_SOURCE_DIR}/config ${pinocchio_INCLUDE_DIRS} ${IKFAST_DIR})
 
 add_subdirectory(${IKFAST_DIR})
 add_library(${PROJECT_NAME} ${SOURCES})
 target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDES})
+# FIXME: It seems that the Archive library is not linked in HexapodSoftware
 target_link_libraries(${PROJECT_NAME} PUBLIC pinocchio::pinocchio ${IKFAST_LIB_NAME})
 
 
@@ -39,7 +40,7 @@ foreach(TEST_SOURCE ${TEST_SOURCES})
     get_filename_component(TEST_NAME ${TEST_SOURCE} NAME_WE)
     add_executable(${TEST_NAME} ${TEST_SOURCE})
     target_include_directories(${TEST_NAME} PUBLIC ${INCLUDES})
-    target_link_libraries(${TEST_NAME} PUBLIC ${PROJECT_NAME} ${IKFAST_LIB_NAME})
+    target_link_libraries(${TEST_NAME} PUBLIC ${PROJECT_NAME})
 endforeach()
 
 
