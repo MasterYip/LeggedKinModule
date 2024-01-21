@@ -23,7 +23,8 @@ bool SingleLegKin::checkJointLimits(const Eigen::Vector3d &joints)
 
 bool SingleLegKin::inverseKin(const Eigen::Vector3d &pos, vector<Eigen::Vector3d> &sols)
 {
-    vector<double> target = {pos[0] + origin_calib_[0], pos[1] + origin_calib_[1], pos[2] + origin_calib_[2]};
+    vector<double> target = {pos[0] + origin_calib_[0], pos[1] + origin_calib_[1], pos[2] + origin_calib_[2],
+                             ik_approx_point_[0] + origin_calib_[0], ik_approx_point_[1] + origin_calib_[1], ik_approx_point_[2] + origin_calib_[2]};
     vector<vector<double>> ret = IKFast_trans3D(target, true);
     if (ret.size() == 0)
     {
@@ -54,7 +55,8 @@ bool SingleLegKin::inverseKinConstraint(const Eigen::Vector3d &pos, vector<Eigen
 bool SingleLegKin::forwardKin(const Eigen::Vector3d &joints, Eigen::Vector3d &pos)
 {
     pinocchio::forwardKinematics(model_, data_, joints);
-    pos = data_.oMi[3].translation();
+    pos = pinocchio::updateFramePlacement(model_, data_, model_.getFrameId(end_effector_name_)).translation();
+    pos -= origin_calib_;
     return true;
 }
 
