@@ -39,25 +39,31 @@ public:
         legs_[4].setPosOffset(Eigen::Vector3d(0, 0.14, 0.011));
         legs_[5].setPosOffset(Eigen::Vector3d(-0.3, 0.08, 0.011));
         Eigen::VectorXd joint_limits;
+        Eigen::Vector3d approx;
         joint_limits.resize(6);
         joint_limits << -0.785, 0.785, -0.5233, 3.14, -0.6978, 3.925;
-        for (size_t i = 0; i < 6; i++)
+        for (uint i = 0; i < 6; i++)
         {
             legs_[i].setJointLimits(joint_limits);
+            forwardKinConstraint(Eigen::Vector3d((joint_limits[0] + joint_limits[1]) / 2.0,
+                                                 (joint_limits[2] + joint_limits[3]) / 2.0,
+                                                 (joint_limits[4] + joint_limits[5]) / 2.0),
+                                 approx, i);
+            legs_[i].setIKApproxPoint(approx);
         }
     };
     ~ElSpiderKin(){};
-    bool inverseKin(const Eigen::Vector3d &pos, vector<Eigen::Vector3d> &sols, uint leg_index)
+    bool inverseKin(const Eigen::Vector3d &pos, vector<Eigen::Vector3d> &sols, uint leg_index, bool approx = true)
     {
-        return legs_[leg_index].inverseKin(pos, sols);
+        return legs_[leg_index].inverseKin(pos, sols, approx);
     };
-    bool inverseKinConstraint(const Eigen::Vector3d &pos, vector<Eigen::Vector3d> &sols, uint leg_index)
+    bool inverseKinConstraint(const Eigen::Vector3d &pos, vector<Eigen::Vector3d> &sols, uint leg_index, bool approx = true)
     {
-        return legs_[leg_index].inverseKinConstraint(pos, sols);
+        return legs_[leg_index].inverseKinConstraint(pos, sols, approx);
     };
-    bool inverseKinConstraint(const Eigen::Vector3d &pos, Eigen::Vector3d &sol, uint leg_index)
+    bool inverseKinConstraint(const Eigen::Vector3d &pos, Eigen::Vector3d &sol, uint leg_index, bool approx = true)
     {
-        return legs_[leg_index].inverseKinConstraint(pos, sol);
+        return legs_[leg_index].inverseKinConstraint(pos, sol, approx);
     };
     bool forwardKin(const Eigen::Vector3d &joints, Eigen::Vector3d &pos, uint leg_index)
     {

@@ -10,12 +10,11 @@ int main()
 
     for (int leg_index = 0; leg_index < 6; leg_index++)
     {
-        printf("FK: ");
+        printf("Leg %d:\n", leg_index);
         Eigen::Vector3d pos_fk;
-        elair.forwardKinConstraint(joints, pos_fk, leg_index);
-        cout << pos_fk.transpose() << endl;
+        elair.forwardKin(joints, pos_fk, leg_index);
+        printf("FK: %.4f, %.4f, %.4f\n", pos_fk[0], pos_fk[1], pos_fk[2]);
 
-        printf("IK: ");
         // vector<Eigen::Vector3d> sols;
         // elair.inverseKinConstraint(pos_fk, sols, leg_index);
         // cout << sols.size() << endl;
@@ -24,7 +23,9 @@ int main()
         //     cout << sols[i].transpose() << endl;
         // }
         Eigen::Vector3d sol;
-        elair.inverseKinConstraint(pos_fk, sol, leg_index);
-        cout << sol.transpose() << endl;
+        if (elair.inverseKinConstraint(pos_fk, sol, leg_index, true))
+            printf("IK: %.4f, %.4f, %.4f\n", sol[0], sol[1], sol[2]);
+        else
+            printf("IK: no solution\n");
     }
 }

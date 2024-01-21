@@ -55,11 +55,11 @@ public:
     bool checkJointLimits(const Eigen::Vector3d &joints);
     // Kinematics
     /* IK - multiple solutions */
-    bool inverseKin(const Eigen::Vector3d &pos, vector<Eigen::Vector3d> &sols);
+    bool inverseKin(const Eigen::Vector3d &pos, vector<Eigen::Vector3d> &sols, bool approx = true);
     /* IK with constraint - multiple solutions */
-    bool inverseKinConstraint(const Eigen::Vector3d &pos, vector<Eigen::Vector3d> &sols);
+    bool inverseKinConstraint(const Eigen::Vector3d &pos, vector<Eigen::Vector3d> &sols, bool approx = true);
     /* IK with constraint - first solution */
-    bool inverseKinConstraint(const Eigen::Vector3d &pos, Eigen::Vector3d &sol);
+    bool inverseKinConstraint(const Eigen::Vector3d &pos, Eigen::Vector3d &sol, bool approx = true);
     bool forwardKin(const Eigen::Vector3d &joints, Eigen::Vector3d &pos);
     bool forwardKinConstraint(const Eigen::Vector3d &joints, Eigen::Vector3d &pos);
 };

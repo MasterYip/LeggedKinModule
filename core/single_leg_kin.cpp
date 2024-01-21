@@ -21,15 +21,23 @@ bool SingleLegKin::checkJointLimits(const Eigen::Vector3d &joints)
     return true;
 }
 
-bool SingleLegKin::inverseKin(const Eigen::Vector3d &pos, vector<Eigen::Vector3d> &sols)
+bool SingleLegKin::inverseKin(const Eigen::Vector3d &pos, vector<Eigen::Vector3d> &sols, bool approx)
 {
     Eigen::Matrix3d mirror = Eigen::Matrix3d::Zero();
     mirror.diagonal() = mirror_offset_;
     Eigen::Vector3d target = mirror * rot_offset_.transpose() * (pos - pos_offset_) + origin_calib_;
-    Eigen::Vector3d approx = mirror * rot_offset_.transpose() * (ik_approx_point_ - pos_offset_) + origin_calib_;
-    vector<double> target_vec = {target[0], target[1], target[2], approx[0], approx[1], approx[2]};
+    vector<double> target_vec;
+    if (approx)
+    {
+        Eigen::Vector3d approx_vec = mirror * rot_offset_.transpose() * (ik_approx_point_ - pos_offset_) + origin_calib_;
+        target_vec = {target[0], target[1], target[2], approx_vec[0], approx_vec[1], approx_vec[2]};
+    }
+    else
+    {
+        target_vec = {target[0], target[1], target[2]};
+    }
 
-    vector<vector<double>> ret = IKFast_trans3D(target_vec, true);
+    vector<vector<double>> ret = IKFast_trans3D(target_vec, approx);
     if (ret.size() == 0)
     {
         return false;
@@ -42,9 +50,9 @@ bool SingleLegKin::inverseKin(const Eigen::Vector3d &pos, vector<Eigen::Vector3d
     return true;
 }
 
-bool SingleLegKin::inverseKinConstraint(const Eigen::Vector3d &pos, vector<Eigen::Vector3d> &sols)
+bool SingleLegKin::inverseKinConstraint(const Eigen::Vector3d &pos, vector<Eigen::Vector3d> &sols, bool approx)
 {
-    inverseKin(pos, sols);
+    inverseKin(pos, sols, approx);
     for (size_t i = 0; i < sols.size(); i++)
     {
         if (!checkJointLimits(sols[i]))
@@ -56,10 +64,10 @@ bool SingleLegKin::inverseKinConstraint(const Eigen::Vector3d &pos, vector<Eigen
     return sols.size() > 0;
 }
 
-bool SingleLegKin::inverseKinConstraint(const Eigen::Vector3d &pos, Eigen::Vector3d &sol)
+bool SingleLegKin::inverseKinConstraint(const Eigen::Vector3d &pos, Eigen::Vector3d &sol, bool approx)
 {
     vector<Eigen::Vector3d> sols;
-    inverseKinConstraint(pos, sols);
+    inverseKinConstraint(pos, sols, approx);
     if (sols.size() == 0)
     {
         return false;
