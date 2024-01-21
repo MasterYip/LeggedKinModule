@@ -9,8 +9,13 @@
 /* external project header files */
 #include "Eigen/Dense"
 /* internal project header files */
+#include "single_leg_kin.h"
 
-class HexapodKin
+class LeggedKin
 {
 private:
+    uint num_legs_;
+    vector<SingleLegKin> legs_;
+public:
+    
 };

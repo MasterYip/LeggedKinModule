@@ -18,6 +18,7 @@
 #include <pinocchio/algorithm/frames.hpp>
 /* internal project header files */
 #include "ikfast_leg_lib.h"
+#include "config.h"
 
 using namespace ikfast_leg;
 using namespace std;
@@ -57,8 +58,12 @@ public:
 
     bool checkJointLimits(const Eigen::Vector3d &joints);
     // Kinematics
+    /* IK - multiple solutions */
     bool inverseKin(const Eigen::Vector3d &pos, vector<Eigen::Vector3d> &sols);
+    /* IK with constraint - multiple solutions */
     bool inverseKinConstraint(const Eigen::Vector3d &pos, vector<Eigen::Vector3d> &sols);
+    /* IK with constraint - first solution */
+    bool inverseKinConstraint(const Eigen::Vector3d &pos, Eigen::Vector3d &sol);
     bool forwardKin(const Eigen::Vector3d &joints, Eigen::Vector3d &pos);
     bool forwardKinConstraint(const Eigen::Vector3d &joints, Eigen::Vector3d &pos);
 };

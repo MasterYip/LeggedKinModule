@@ -2,6 +2,9 @@ build
 
 .vscode
 .setuprc
+
+core/config.h
+
 # Prerequisites
 *.d
 

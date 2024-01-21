@@ -56,6 +56,18 @@ bool SingleLegKin::inverseKinConstraint(const Eigen::Vector3d &pos, vector<Eigen
     return sols.size() > 0;
 }
 
+bool SingleLegKin::inverseKinConstraint(const Eigen::Vector3d &pos, Eigen::Vector3d &sol)
+{
+    vector<Eigen::Vector3d> sols;
+    inverseKinConstraint(pos, sols);
+    if (sols.size() == 0)
+    {
+        return false;
+    }
+    sol = sols[0];
+    return true;
+}
+
 bool SingleLegKin::forwardKin(const Eigen::Vector3d &joints, Eigen::Vector3d &pos)
 {
     pinocchio::forwardKinematics(model_, data_, joints);

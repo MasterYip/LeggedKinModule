@@ -5,25 +5,43 @@ project(LeggedKinModule)
 set(CMAKE_CXX_STANDARD 11)
 
 find_package(pinocchio REQUIRED)
-# pkg_check_modules(pinocchio REQUIRED pinocchio)
-set(IKFAST_LIB_NAME ikfast_leg_lib)
+
+# get folder name of ikfast library (in config/)
+file(GLOB CONFIG_DIRS config/*)
+foreach(CONFIG_DIR ${CONFIG_DIRS})
+    get_filename_component(CONFIG_DIR_EXT ${CONFIG_DIR} EXT)
+    if (CONFIG_DIR_EXT STREQUAL ".urdf")
+        set(URDF_PATH ${CONFIG_DIR})
+    endif()
+    if (CONFIG_DIR_EXT STREQUAL "")
+        get_filename_component(IKFAST_LIB_NAME ${CONFIG_DIR} NAME)
+    endif()
+endforeach()
+
+message(STATUS "IKFAST_LIB_NAME: ${IKFAST_LIB_NAME} | URDF_PATH: ${URDF_PATH}")
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/core/config.h.in ${CMAKE_CURRENT_SOURCE_DIR}/core/config.h)
+
 set(IKFAST_DIR ${CMAKE_CURRENT_SOURCE_DIR}/config/${IKFAST_LIB_NAME})
 set(BUILD_GTESTING OFF)
 
-file(GLOB_RECURSE SOURCES src/*.cpp)
+file(GLOB_RECURSE SOURCES core/*.cpp)
+list(APPEND INCLUDES core examples ${pinocchio_INCLUDE_DIRS} ${IKFAST_DIR})
 
 add_subdirectory(${IKFAST_DIR})
 
 add_library(${PROJECT_NAME} ${SOURCES})
-target_include_directories(${PROJECT_NAME} PUBLIC inc ${pinocchio_INCLUDE_DIRS} ${IKFAST_DIR})
+target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDES})
 target_link_libraries(${PROJECT_NAME} PUBLIC pinocchio::pinocchio ${IKFAST_LIB_NAME})
+
+
+
 
 # Tests
 file(GLOB_RECURSE TEST_SOURCES test/*.cpp)
 foreach(TEST_SOURCE ${TEST_SOURCES})
     get_filename_component(TEST_NAME ${TEST_SOURCE} NAME_WE)
     add_executable(${TEST_NAME} ${TEST_SOURCE})
-    target_include_directories(${TEST_NAME} PUBLIC inc ${pinocchio_INCLUDE_DIRS} ${IKFAST_DIR})
+    target_include_directories(${TEST_NAME} PUBLIC ${INCLUDES})
     target_link_libraries(${TEST_NAME} PUBLIC ${PROJECT_NAME} ${IKFAST_LIB_NAME})
 endforeach()
 
