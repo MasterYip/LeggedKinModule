@@ -6,8 +6,21 @@
 /* c++ standard library header files */
 
 /* external project header files */
-
+// Pinocchio
+// #include "pinocchio/algorithm/joint-configuration.hpp"
+// #include "pinocchio/algorithm/rnea.hpp"
+// #include "pinocchio/algorithm/kinematics.hpp"
+#include "pinocchio/algorithm/jacobian.hpp"
+#include "pinocchio/algorithm/frames.hpp"
+#include "pinocchio/parsers/urdf.hpp"
 /* internal project header files */
+
+SingleLegKin::SingleLegKin(std::string urdf_file_path)
+{
+    pinocchio::urdf::buildModel(urdf_file_path, model_);
+    data_ = pinocchio::Data(model_);
+    joint_limits_ << -M_PI, M_PI, -M_PI, M_PI, -M_PI, M_PI;
+};
 
 bool SingleLegKin::checkJointLimits(const Eigen::Vector3d &joints)
 {

@@ -9,13 +9,8 @@
 #include <string>
 /* external project header files */
 #include "Eigen/Dense"
-// Pinocchio
-#include "pinocchio/algorithm/jacobian.hpp"
-// #include "pinocchio/algorithm/joint-configuration.hpp"
-// #include "pinocchio/algorithm/rnea.hpp"
-// #include "pinocchio/algorithm/kinematics.hpp"
-#include "pinocchio/algorithm/frames.hpp"
-#include "pinocchio/parsers/urdf.hpp"
+#include "pinocchio/multibody/model.hpp"
+#include "pinocchio/multibody/data.hpp"
 /* internal project header files */
 #include "config.h"
 
@@ -39,12 +34,7 @@ private:
     Eigen::Vector3d ik_approx_point_ = Eigen::Vector3d::Zero();
 
 public:
-    SingleLegKin(std::string urdf_file_path)
-    {
-        pinocchio::urdf::buildModel(urdf_file_path, model_);
-        data_ = pinocchio::Data(model_);
-        joint_limits_ << -M_PI, M_PI, -M_PI, M_PI, -M_PI, M_PI;
-    };
+    SingleLegKin(std::string urdf_file_path);
     ~SingleLegKin() = default;
     // Setters
     void setEndEffectorName(const std::string &end_effector_name) { end_effector_name_ = end_effector_name; };
