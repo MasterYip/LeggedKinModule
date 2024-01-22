@@ -30,8 +30,10 @@ list(APPEND INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/core ${CMAKE_CURRENT_SOURCE_DIR
 
 add_subdirectory(${IKFAST_DIR})
 add_library(${PROJECT_NAME} ${SOURCES})
-target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDES})
-# FIXME: It seems that the Archive library is not linked in HexapodSoftware
+target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDES}
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/core>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/config>
+)
 target_link_libraries(${PROJECT_NAME} PUBLIC pinocchio::pinocchio ${IKFAST_LIB_NAME})
 
 

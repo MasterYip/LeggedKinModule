@@ -20,3 +20,5 @@ A kinematic module for legged robots which have leg-symmetry using Pinocchio &am
 ## Note
 
 - **`pinocchio` will conflict with `boost`**, which should be included after `pinocchio`
+
+  > USE_PINOCCHIO macro is reserved for setting pinocchio & boost include order

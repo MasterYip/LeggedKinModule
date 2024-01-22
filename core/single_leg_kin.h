@@ -9,8 +9,10 @@
 #include <string>
 /* external project header files */
 #include "Eigen/Dense"
+#ifndef USE_PINOCCHIO // If USE_PINOCCHIO is defined, then it assumes that the user has already included pinocchio
 #include "pinocchio/multibody/model.hpp"
 #include "pinocchio/multibody/data.hpp"
+#endif
 /* internal project header files */
 #include "config.h"
 
