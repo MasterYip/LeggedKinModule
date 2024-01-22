@@ -10,9 +10,12 @@
 /* external project header files */
 #include "Eigen/Dense"
 // Pinocchio
+#include "pinocchio/algorithm/jacobian.hpp"
+// #include "pinocchio/algorithm/joint-configuration.hpp"
+// #include "pinocchio/algorithm/rnea.hpp"
+// #include "pinocchio/algorithm/kinematics.hpp"
+#include "pinocchio/algorithm/frames.hpp"
 #include "pinocchio/parsers/urdf.hpp"
-#include <pinocchio/algorithm/jacobian.hpp>
-#include <pinocchio/algorithm/frames.hpp>
 /* internal project header files */
 #include "config.h"
 

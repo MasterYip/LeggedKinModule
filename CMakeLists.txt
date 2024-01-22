@@ -7,7 +7,8 @@ set(BUILD_GTESTING OFF)
 
 set(CMAKE_CXX_STANDARD 11)
 
-find_package(pinocchio REQUIRED)
+find_package(pinocchio 2.5.1 REQUIRED)
+message(STATUS "Pinocchio version: ${pinocchio_VERSION}")
 
 # get folder name of ikfast library (in config/)
 file(GLOB CONFIG_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/config/*)
