@@ -38,6 +38,8 @@ public:
         legs_[3].setPosOffset(Eigen::Vector3d(0.3, 0.08, 0.011));
         legs_[4].setPosOffset(Eigen::Vector3d(0, 0.14, 0.011));
         legs_[5].setPosOffset(Eigen::Vector3d(-0.3, 0.08, 0.011));
+        legs_[2].setJointDirections(Eigen::Vector3d(-1, 1, 1));
+        legs_[5].setJointDirections(Eigen::Vector3d(-1, 1, 1));
         Eigen::VectorXd joint_limits;
         Eigen::Vector3d approx;
         joint_limits.resize(6);

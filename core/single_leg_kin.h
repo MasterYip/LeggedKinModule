@@ -30,10 +30,15 @@ private:
     Eigen::Vector3d mirror_offset_ = Eigen::Vector3d::Ones();  // Mirror operation
     Eigen::Matrix3d rot_offset_ = Eigen::Matrix3d::Identity(); // Rotation operation
     Eigen::Vector3d pos_offset_ = Eigen::Vector3d::Zero();     // Translation operation
+    // Joint Directions (default: [1, 1, 1], decide before joint limits)
+    Eigen::Vector3d joint_directions_ = Eigen::Vector3d::Ones();
     // Joint limits (default: [-pi, pi], order: [min, max, min, max, min, max])
     Eigen::VectorXd joint_limits_ = Eigen::VectorXd::Zero(6);
     // IKFast Approx point (usually the middle point of the joint limits)
     Eigen::Vector3d ik_approx_point_ = Eigen::Vector3d::Zero();
+
+    Eigen::Matrix3d mirror_offset_mat_ = Eigen::Matrix3d::Identity();
+    Eigen::Matrix3d joint_dir_mat_ = Eigen::Matrix3d::Identity();
 
 public:
     SingleLegKin(std::string urdf_file_path);
@@ -41,10 +46,13 @@ public:
     // Setters
     void setEndEffectorName(const std::string &end_effector_name) { end_effector_name_ = end_effector_name; };
     void setOriginCalib(const Eigen::Vector3d &origin_calib) { origin_calib_ = origin_calib; };
-    void setMirrorOffset(const Eigen::Vector3d &mirror_offset) { mirror_offset_ = mirror_offset; };
+    void setMirrorOffset(const Eigen::Vector3d &mirror_offset) { mirror_offset_ = mirror_offset; 
+        mirror_offset_mat_.diagonal() = mirror_offset_; };
     void setPosOffset(const Eigen::Vector3d &pos_offset) { pos_offset_ = pos_offset; };
     void setRotOffset(const Eigen::Matrix3d &rot_offset) { rot_offset_ = rot_offset; };
     void setJointLimits(const Eigen::VectorXd &joint_limits) { joint_limits_ = joint_limits; };
+    void setJointDirections(const Eigen::Vector3d &joint_directions) { joint_directions_ = joint_directions; 
+        joint_dir_mat_.diagonal() = joint_directions_; };
     void setIKApproxPoint(const Eigen::Vector3d &ik_approx_point) { ik_approx_point_ = ik_approx_point; };
 
     bool checkJointLimits(const Eigen::Vector3d &joints);
