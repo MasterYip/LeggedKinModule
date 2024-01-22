@@ -16,3 +16,7 @@ A kinematic module for legged robots which have leg-symmetry using Pinocchio &am
 
 - Do dichotomy search outside of IKFast_warpper
 - Consider for code reusability
+
+## Note
+
+- **`pinocchio` will conflict with `boost`**, which should be included after `pinocchio`
