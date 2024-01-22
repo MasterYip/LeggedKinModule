@@ -4,8 +4,8 @@ int main()
 {
     ElSpiderKin elair = ElSpiderKin();
     Eigen::Vector3d joints;
-    cout << "Input joints: ";
-    cin >> joints[0] >> joints[1] >> joints[2];
+    std::cout << "Input joints: ";
+    std::cin >> joints[0] >> joints[1] >> joints[2];
     // Eigen::Vector3d pos = {0.35350208, -0.22998902, -0.1360658};
 
     for (int leg_index = 0; leg_index < 6; leg_index++)

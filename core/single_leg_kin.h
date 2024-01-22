@@ -20,13 +20,13 @@
 #include "config.h"
 
 using namespace ikfast_leg;
-using namespace std;
+
 class SingleLegKin
 {
 private:
     pinocchio::Model model_;
     pinocchio::Data data_;
-    string end_effector_name_ = "RF_FOOT";
+    std::string end_effector_name_ = "RF_FOOT";
     // Origin Calib: move the origin of the robot to the origin of the world frame
     Eigen::Vector3d origin_calib_ = Eigen::Vector3d::Zero(); // robot origin in world frame
     // Installation Offsets (in order: mirror, rot, pos )
@@ -39,7 +39,7 @@ private:
     Eigen::Vector3d ik_approx_point_ = Eigen::Vector3d::Zero();
 
 public:
-    SingleLegKin(string urdf_file_path)
+    SingleLegKin(std::string urdf_file_path)
     {
         pinocchio::urdf::buildModel(urdf_file_path, model_);
         data_ = pinocchio::Data(model_);
@@ -47,7 +47,7 @@ public:
     };
     ~SingleLegKin() = default;
     // Setters
-    void setEndEffectorName(const string &end_effector_name) { end_effector_name_ = end_effector_name; };
+    void setEndEffectorName(const std::string &end_effector_name) { end_effector_name_ = end_effector_name; };
     void setOriginCalib(const Eigen::Vector3d &origin_calib) { origin_calib_ = origin_calib; };
     void setMirrorOffset(const Eigen::Vector3d &mirror_offset) { mirror_offset_ = mirror_offset; };
     void setPosOffset(const Eigen::Vector3d &pos_offset) { pos_offset_ = pos_offset; };
@@ -58,9 +58,9 @@ public:
     bool checkJointLimits(const Eigen::Vector3d &joints);
     // Kinematics
     /* IK - multiple solutions */
-    bool inverseKin(const Eigen::Vector3d &pos, vector<Eigen::Vector3d> &sols, bool approx = true);
+    bool inverseKin(const Eigen::Vector3d &pos, std::vector<Eigen::Vector3d> &sols, bool approx = true);
     /* IK with constraint - multiple solutions */
-    bool inverseKinConstraint(const Eigen::Vector3d &pos, vector<Eigen::Vector3d> &sols, bool approx = true);
+    bool inverseKinConstraint(const Eigen::Vector3d &pos, std::vector<Eigen::Vector3d> &sols, bool approx = true);
     /* IK with constraint - first solution */
     bool inverseKinConstraint(const Eigen::Vector3d &pos, Eigen::Vector3d &sol, bool approx = true);
     bool forwardKin(const Eigen::Vector3d &joints, Eigen::Vector3d &pos);

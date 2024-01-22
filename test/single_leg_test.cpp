@@ -27,17 +27,17 @@ int main()
     printf("IK: ");
     SingleLegKin kin = buildElSpiderAir();
     Eigen::Vector3d pos = {0.05350208, -0.14998902, -0.1480558};
-    vector<Eigen::Vector3d> sols;
+    std::vector<Eigen::Vector3d> sols;
     kin.inverseKinConstraint(pos, sols);
-    cout << sols.size() << endl;
+    std::cout << sols.size() << std::endl;
     for (size_t i = 0; i < sols.size(); i++)
     {
-        cout << sols[i].transpose() << endl;
+        std::cout << sols[i].transpose() << std::endl;
     }
 
     printf("FK: ");
     Eigen::Vector3d joints = {0.0, 1.57, 1.57};
     Eigen::Vector3d pos_fk;
     kin.forwardKin(joints, pos_fk);
-    cout << pos_fk.transpose() << endl;
+    std::cout << pos_fk.transpose() << std::endl;
 }
