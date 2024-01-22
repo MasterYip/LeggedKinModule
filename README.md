@@ -11,13 +11,13 @@ A kinematic module for legged robots which have leg-symmetry using Pinocchio &am
    Then put it in `config` folder.
    >HexLab repo: [IKFast_warpper](https://github.com/HITSME-HexLab/IKFast_warpper)
 3. Write your robot own kinematic module
-   Write your own kinematic module in `config` folder. You can refer to `config/elspider_air_kin.h`.
+   Write your own kinematic module in `config` folder. You can refer to [`config/elspider_air_kin.h`](config/elspider_air_kin.h).
 
 >example is provided in `config` folder.
 
 ### Config Explanation
 
-Config parameters are defined in `core/single_leg_kin.h`.
+Config parameters are defined in [`core/single_leg_kin.h`](core/single_leg_kin.h).
 
 ```c++
 std::string end_effector_name_ = "RF_FOOT";
