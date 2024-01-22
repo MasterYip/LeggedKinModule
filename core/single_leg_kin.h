@@ -24,8 +24,8 @@ private:
     pinocchio::Model model_;
     pinocchio::Data data_;
     std::string end_effector_name_ = "RF_FOOT";
-    // Origin Calib: move the origin of the robot to the origin of the world frame
-    Eigen::Vector3d origin_calib_ = Eigen::Vector3d::Zero(); // robot origin in world frame
+    // Origin Calib: move the origin of the leg to the origin of the base frame
+    Eigen::Vector3d origin_calib_ = Eigen::Vector3d::Zero(); // leg origin in base frame
     // Installation Offsets (in order: mirror, rot, pos )
     Eigen::Vector3d mirror_offset_ = Eigen::Vector3d::Ones();  // Mirror operation
     Eigen::Matrix3d rot_offset_ = Eigen::Matrix3d::Identity(); // Rotation operation
