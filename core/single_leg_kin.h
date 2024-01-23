@@ -56,13 +56,14 @@ public:
     void setIKApproxPoint(const Eigen::Vector3d &ik_approx_point) { ik_approx_point_ = ik_approx_point; };
 
     bool checkJointLimits(const Eigen::Vector3d &joints);
+    void constraintFiltering(std::vector<Eigen::Vector3d> &sols);
     // Kinematics
     /* IK - multiple solutions */
     bool inverseKin(const Eigen::Vector3d &pos, std::vector<Eigen::Vector3d> &sols, bool approx = true);
     /* IK with constraint - multiple solutions */
-    bool inverseKinConstraint(const Eigen::Vector3d &pos, std::vector<Eigen::Vector3d> &sols, bool approx = true);
+    bool inverseKinConstraint(const Eigen::Vector3d &pos, std::vector<Eigen::Vector3d> &sols, bool approx = true, uint iter=10);
     /* IK with constraint - first solution */
-    bool inverseKinConstraint(const Eigen::Vector3d &pos, Eigen::Vector3d &sol, bool approx = true);
+    bool inverseKinConstraint(const Eigen::Vector3d &pos, Eigen::Vector3d &sol, bool approx = true, uint iter=10);
     bool forwardKin(const Eigen::Vector3d &joints, Eigen::Vector3d &pos);
     bool forwardKinConstraint(const Eigen::Vector3d &joints, Eigen::Vector3d &pos);
 };

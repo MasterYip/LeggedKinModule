@@ -41,11 +41,20 @@ bool SingleLegKin::checkJointLimits(const Eigen::Vector3d &joints)
     return true;
 }
 
+/**
+ * @brief Inverse kinematics using IKFast
+ *
+ * @param pos expected position of the end effector in the base frame
+ * @param sols solutions of the inverse kinematics with directed joint angles
+ * @param approx whether to use dichotomy to find the solution (IKFast_warpper built-in)
+ * @return true
+ * @return false
+ */
 bool SingleLegKin::inverseKin(const Eigen::Vector3d &pos, std::vector<Eigen::Vector3d> &sols, bool approx)
 {
     Eigen::Vector3d target = mirror_offset_mat_ * rot_offset_.transpose() * (pos - pos_offset_) + origin_calib_;
     std::vector<double> target_vec;
-    if (approx)
+    if (approx) // Use dichotomy provided by IKFast_wrapper
     {
         Eigen::Vector3d approx_vec = mirror_offset_mat_ * rot_offset_.transpose() * (ik_approx_point_ - pos_offset_) + origin_calib_;
         target_vec = {target[0], target[1], target[2], approx_vec[0], approx_vec[1], approx_vec[2]};
@@ -62,14 +71,13 @@ bool SingleLegKin::inverseKin(const Eigen::Vector3d &pos, std::vector<Eigen::Vec
     for (size_t i = 0; i < ret.size(); i++)
     {
         sols[i] = Eigen::Map<Eigen::Vector3d>(ret[i].data());
-        sols[i] = joint_dir_mat_ * sols[i];
+        sols[i] = joint_dir_mat_ * sols[i]; // Redirect joint angles
     }
     return true;
 }
 
-bool SingleLegKin::inverseKinConstraint(const Eigen::Vector3d &pos, std::vector<Eigen::Vector3d> &sols, bool approx)
+void SingleLegKin::constraintFiltering(std::vector<Eigen::Vector3d> &sols)
 {
-    inverseKin(pos, sols, approx);
     for (size_t i = 0; i < sols.size(); i++)
     {
         if (!checkJointLimits(sols[i]))
@@ -78,13 +86,41 @@ bool SingleLegKin::inverseKinConstraint(const Eigen::Vector3d &pos, std::vector<
             i--;
         }
     }
-    return sols.size() > 0;
 }
 
-bool SingleLegKin::inverseKinConstraint(const Eigen::Vector3d &pos, Eigen::Vector3d &sol, bool approx)
+// TODO: test
+bool SingleLegKin::inverseKinConstraint(const Eigen::Vector3d &pos, std::vector<Eigen::Vector3d> &sols, bool approx, uint iter)
+{
+    Eigen::Vector3d target_pt = mirror_offset_mat_ * rot_offset_.transpose() * (pos - pos_offset_) + origin_calib_;
+    Eigen::Vector3d approx_pt = mirror_offset_mat_ * rot_offset_.transpose() * (ik_approx_point_ - pos_offset_) + origin_calib_;
+    Eigen::Vector3d tmp_pt;
+    sols = IKFast_trans3D(target_pt);
+    constraintFiltering(sols);
+    if (sols.size() > 0)
+        return true;
+    else if (approx)
+    {
+        for (int i = 0; i < iter; ++i)
+        {
+            tmp_pt = (target_pt + approx_pt) / 2;
+            sols = IKFast_trans3D(tmp_pt);
+            constraintFiltering(sols);
+            if (sols.size() > 0)
+                approx_pt = tmp_pt;
+            else
+                target_pt = tmp_pt;
+        }
+        sols = IKFast_trans3D(approx_pt);
+        constraintFiltering(sols);
+        return sols.size() > 0;
+    }
+    return false;
+}
+
+bool SingleLegKin::inverseKinConstraint(const Eigen::Vector3d &pos, Eigen::Vector3d &sol, bool approx, uint iter)
 {
     std::vector<Eigen::Vector3d> sols;
-    inverseKinConstraint(pos, sols, approx);
+    inverseKinConstraint(pos, sols, approx, iter);
     if (sols.size() == 0)
     {
         return false;
