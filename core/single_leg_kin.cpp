@@ -76,10 +76,16 @@ bool SingleLegKin::inverseKin(const Eigen::Vector3d &pos, std::vector<Eigen::Vec
     return true;
 }
 
+/**
+ * @brief Filter out the solutions that are out of joint limits & redirect joint angles
+ * 
+ * @param sols 
+ */
 void SingleLegKin::constraintFiltering(std::vector<Eigen::Vector3d> &sols)
 {
     for (size_t i = 0; i < sols.size(); i++)
     {
+        sols[i] = joint_dir_mat_ * sols[i];
         if (!checkJointLimits(sols[i]))
         {
             sols.erase(sols.begin() + i);
