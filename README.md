@@ -5,12 +5,19 @@ A kinematic module for legged robots which have leg-symmetry using Pinocchio &am
 ## Usage
 
 1. Prepare Single Leg Urdf (for pinocchio FK)
+
    Prepare a urdf file that contains only one leg, put it in `config` folder.
+
 2. Generate IKFast
+
    Use [IKFast_warpper](https://github.com/MasterYip/IKFast_warpper) to generate cpp library named `ikfast_leg_lib` with IK algorithm in namespace `ikfast_leg`.
+
    Then put it in `config` folder.
+
    >HexLab repo: [IKFast_warpper](https://github.com/HITSME-HexLab/IKFast_warpper)
+
 3. Write your robot own kinematic module
+
    Write your own kinematic module in `config` folder. You can refer to [`config/elspider_air_kin.h`](config/elspider_air_kin.h).
 
 >example is provided in `config` folder.
