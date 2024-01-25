@@ -2,6 +2,13 @@
 
 A kinematic module for legged robots which have leg-symmetry using Pinocchio &amp; IKFast.
 
+## Positioning
+
+- This kinematic module is for **Position Ctrl**(Trajectory tracking).
+- For generality reason,this module supports all legged robots (hexapod) that has **leg symmetry**.
+- Hope it is faster than using whole robot urdf which should **update every frame when calculating kinematics**
+- This Module might **NOT help with MPC controlling** (OCS2 MPC don't use IK and has its pinocchio interface)
+
 ## Usage
 
 1. Prepare Single Leg Urdf (for pinocchio FK)
@@ -14,13 +21,13 @@ A kinematic module for legged robots which have leg-symmetry using Pinocchio &am
 
    Then put it in `config` folder.
 
-   >HexLab repo: [IKFast_warpper](https://github.com/HITSME-HexLab/IKFast_warpper)
+   > HexLab repo: [IKFast_warpper](https://github.com/HITSME-HexLab/IKFast_warpper)
 
 3. Write your robot own kinematic module
 
    Write your own kinematic module in `config` folder. You can refer to [`config/elspider_air_kin.h`](config/elspider_air_kin.h).
 
->example is provided in `config` folder.
+> example is provided in `config` folder.
 
 ### Config Explanation
 
@@ -54,8 +61,9 @@ Eigen::Vector3d ik_approx_point_ = Eigen::Vector3d::Zero();
 
 ## TODO
 
-- Do dichotomy search outside of IKFast_warpper
-- Consider for code reusability
+- [x] Do dichotomy search outside of IKFast_warpper
+- [x] Consider for code reusability
+- [ ] Add Jacobian & Hessian(Jacobian time derivative) support
 
 ## Note
 
