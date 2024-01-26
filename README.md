@@ -70,3 +70,13 @@ Eigen::Vector3d ik_approx_point_ = Eigen::Vector3d::Zero();
 - **`pinocchio` will conflict with `boost`**, which should be included after `pinocchio`
 
   > USE_PINOCCHIO macro is reserved for setting pinocchio & boost include order
+
+## Contribution
+
+To ensure the format and security of our commits, we've defined some git hooks. We use [husky](https://github.com/typicode/husky) to manage these git hooks. First, you need to install husky, and then enable the git hooks with ```husky install```. And you can use ```pre-commit run -a``` to test [pre-commit](https://pre-commit.com/) hooks.
+
+Code formatting utilizes Clang-Format with a modified Microsoft style, which is described by the .clang-format file.
+
+Static checking involves:
+
+- clang-tidy, as described by the .clang-tidy file.

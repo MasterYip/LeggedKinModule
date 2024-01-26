@@ -17,10 +17,11 @@ namespace ikfast_leg
 {
     bool IKFast_trans3D(const double trans[3], double solret[10][3]);
 
-    std::vector<std::vector<double>> IKFast_trans3D(const std::vector<double> trans, bool approx = false);
+    std::vector<std::vector<double>> IKFast_trans3D(const std::vector<double> trans,
+                                                    bool approx = false);
 
 #if 1
     std::vector<Eigen::Vector3d> IKFast_trans3D(const Eigen::Vector3d trans);
 #endif
 
-} // namespace IKFAST_NAMESPACE
+} // namespace ikfast_leg

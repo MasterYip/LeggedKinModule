@@ -13,10 +13,10 @@
 
 class ElSpiderKin
 {
-private:
+  private:
     std::vector<SingleLegKin> legs_;
 
-public:
+  public:
     ElSpiderKin()
     {
         legs_.resize(6, SingleLegKin(URDF_PATH));
@@ -55,15 +55,18 @@ public:
         }
     };
     ~ElSpiderKin(){};
-    bool inverseKin(const Eigen::Vector3d &pos, std::vector<Eigen::Vector3d> &sols, uint leg_index, bool approx = true)
+    bool inverseKin(const Eigen::Vector3d &pos, std::vector<Eigen::Vector3d> &sols, uint leg_index,
+                    bool approx = true)
     {
         return legs_[leg_index].inverseKin(pos, sols, approx);
     };
-    bool inverseKinConstraint(const Eigen::Vector3d &pos, std::vector<Eigen::Vector3d> &sols, uint leg_index, bool approx = true)
+    bool inverseKinConstraint(const Eigen::Vector3d &pos, std::vector<Eigen::Vector3d> &sols,
+                              uint leg_index, bool approx = true)
     {
         return legs_[leg_index].inverseKinConstraint(pos, sols, approx);
     };
-    bool inverseKinConstraint(const Eigen::Vector3d &pos, Eigen::Vector3d &sol, uint leg_index, bool approx = true)
+    bool inverseKinConstraint(const Eigen::Vector3d &pos, Eigen::Vector3d &sol, uint leg_index,
+                              bool approx = true)
     {
         return legs_[leg_index].inverseKinConstraint(pos, sol, approx);
     };

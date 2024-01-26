@@ -1,7 +1,8 @@
 build
-
+node_modules
 .vscode
 .setuprc
+package-lock.json
 
 core/config.h
 

@@ -10,8 +10,8 @@
 // #include "pinocchio/algorithm/joint-configuration.hpp"
 // #include "pinocchio/algorithm/rnea.hpp"
 // #include "pinocchio/algorithm/kinematics.hpp"
-#include "pinocchio/algorithm/jacobian.hpp"
 #include "pinocchio/algorithm/frames.hpp"
+#include "pinocchio/algorithm/jacobian.hpp"
 #include "pinocchio/parsers/urdf.hpp"
 /* internal project header files */
 
@@ -50,13 +50,17 @@ bool SingleLegKin::checkJointLimits(const Eigen::Vector3d &joints)
  * @return true
  * @return false
  */
-bool SingleLegKin::inverseKin(const Eigen::Vector3d &pos, std::vector<Eigen::Vector3d> &sols, bool approx)
+bool SingleLegKin::inverseKin(const Eigen::Vector3d &pos, std::vector<Eigen::Vector3d> &sols,
+                              bool approx)
 {
-    Eigen::Vector3d target = mirror_offset_mat_ * rot_offset_.transpose() * (pos - pos_offset_) + origin_calib_;
+    Eigen::Vector3d target =
+        mirror_offset_mat_ * rot_offset_.transpose() * (pos - pos_offset_) + origin_calib_;
     std::vector<double> target_vec;
     if (approx) // Use dichotomy provided by IKFast_wrapper
     {
-        Eigen::Vector3d approx_vec = mirror_offset_mat_ * rot_offset_.transpose() * (ik_approx_point_ - pos_offset_) + origin_calib_;
+        Eigen::Vector3d approx_vec =
+            mirror_offset_mat_ * rot_offset_.transpose() * (ik_approx_point_ - pos_offset_) +
+            origin_calib_;
         target_vec = {target[0], target[1], target[2], approx_vec[0], approx_vec[1], approx_vec[2]};
     }
     else
@@ -78,8 +82,8 @@ bool SingleLegKin::inverseKin(const Eigen::Vector3d &pos, std::vector<Eigen::Vec
 
 /**
  * @brief Filter out the solutions that are out of joint limits & redirect joint angles
- * 
- * @param sols 
+ *
+ * @param sols
  */
 void SingleLegKin::constraintFiltering(std::vector<Eigen::Vector3d> &sols)
 {
@@ -95,10 +99,14 @@ void SingleLegKin::constraintFiltering(std::vector<Eigen::Vector3d> &sols)
 }
 
 // TODO: test
-bool SingleLegKin::inverseKinConstraint(const Eigen::Vector3d &pos, std::vector<Eigen::Vector3d> &sols, bool approx, uint iter)
+bool SingleLegKin::inverseKinConstraint(const Eigen::Vector3d &pos,
+                                        std::vector<Eigen::Vector3d> &sols, bool approx, uint iter)
 {
-    Eigen::Vector3d target_pt = mirror_offset_mat_ * rot_offset_.transpose() * (pos - pos_offset_) + origin_calib_;
-    Eigen::Vector3d approx_pt = mirror_offset_mat_ * rot_offset_.transpose() * (ik_approx_point_ - pos_offset_) + origin_calib_;
+    Eigen::Vector3d target_pt =
+        mirror_offset_mat_ * rot_offset_.transpose() * (pos - pos_offset_) + origin_calib_;
+    Eigen::Vector3d approx_pt =
+        mirror_offset_mat_ * rot_offset_.transpose() * (ik_approx_point_ - pos_offset_) +
+        origin_calib_;
     Eigen::Vector3d tmp_pt;
     sols = IKFast_trans3D(target_pt);
     constraintFiltering(sols);
@@ -123,7 +131,8 @@ bool SingleLegKin::inverseKinConstraint(const Eigen::Vector3d &pos, std::vector<
     return false;
 }
 
-bool SingleLegKin::inverseKinConstraint(const Eigen::Vector3d &pos, Eigen::Vector3d &sol, bool approx, uint iter)
+bool SingleLegKin::inverseKinConstraint(const Eigen::Vector3d &pos, Eigen::Vector3d &sol,
+                                        bool approx, uint iter)
 {
     std::vector<Eigen::Vector3d> sols;
     inverseKinConstraint(pos, sols, approx, iter);
@@ -138,7 +147,8 @@ bool SingleLegKin::inverseKinConstraint(const Eigen::Vector3d &pos, Eigen::Vecto
 bool SingleLegKin::forwardKin(const Eigen::Vector3d &joints, Eigen::Vector3d &pos)
 {
     pinocchio::forwardKinematics(model_, data_, joint_dir_mat_ * joints);
-    pos = pinocchio::updateFramePlacement(model_, data_, model_.getFrameId(end_effector_name_)).translation();
+    pos = pinocchio::updateFramePlacement(model_, data_, model_.getFrameId(end_effector_name_))
+              .translation();
     pos = rot_offset_ * mirror_offset_mat_ * (pos - origin_calib_) + pos_offset_;
     return true;
 }
