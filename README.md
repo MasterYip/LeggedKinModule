@@ -17,11 +17,11 @@ A kinematic module for legged robots which have leg-symmetry using Pinocchio &am
 
 2. Generate IKFast
 
-   Use [IKFast_warpper](https://github.com/MasterYip/IKFast_warpper) to generate cpp library named `ikfast_leg_lib` with IK algorithm in namespace `ikfast_leg`.
+   Use [IKFast_wrapper](https://github.com/MasterYip/IKFast_wrapper) to generate cpp library named `ikfast_leg_lib` with IK algorithm in namespace `ikfast_leg`.
 
    Then put it in `config` folder.
 
-   > HexLab repo: [IKFast_warpper](https://github.com/HITSME-HexLab/IKFast_warpper)
+   > HexLab repo: [IKFast_wrapper](https://github.com/HITSME-HexLab/IKFast_wrapper)
 
 3. Write your robot own kinematic module
 
