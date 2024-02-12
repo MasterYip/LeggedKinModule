@@ -64,6 +64,7 @@ Eigen::Vector3d ik_approx_point_ = Eigen::Vector3d::Zero();
 - [x] Do dichotomy search outside of IKFast_warpper
 - [x] Consider for code reusability
 - [ ] Add Jacobian & Hessian(Jacobian time derivative) support
+- [ ] Add dichotomy iter arg for robot interface
 
 ## Note
 
