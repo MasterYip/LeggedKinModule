@@ -72,6 +72,18 @@ Eigen::Vector3d ik_approx_point_ = Eigen::Vector3d::Zero();
 
   > USE_PINOCCHIO macro is reserved for setting pinocchio & boost include order
 
+## Cite this repo
+
+```bibtex
+@online{leggedkinmodule_repo,
+  author = {Raymon Yip},
+  title = {LeggedKinModule},
+  year = 2024,
+  url = {https://github.com/MasterYip/LeggedKinModule},
+  urldate = {2024-02-25}
+}
+```
+
 ## Contribution
 
 To ensure the format and security of our commits, we've defined some git hooks. We use [husky](https://github.com/typicode/husky) to manage these git hooks. First, you need to install husky, and then enable the git hooks with ```husky install```. And you can use ```pre-commit run -a``` to test [pre-commit](https://pre-commit.com/) hooks.
