@@ -43,6 +43,7 @@ class SingleLegKin
   public:
     SingleLegKin(std::string urdf_file_path);
     ~SingleLegKin() = default;
+    bool testhidden();
     // Setters
     void setEndEffectorName(const std::string &end_effector_name)
     {
@@ -92,7 +93,7 @@ class SingleLegKin
     bool inverseKinConstraint(const Eigen::Vector3d &pos, Eigen::Vector3d &sol, bool approx = true,
                               uint iter = 10);
     bool forwardKin(const Eigen::Vector3d &joints, Eigen::Vector3d &pos);
-    bool forwardKinConstraint(const Eigen::Vector3d &joints, Eigen::Vector3d &pos);
-    
+    bool forwardKinConstraint_test(const Eigen::Vector3d &joints, Eigen::Vector3d &pos);
+
     bool getJacobian(const Eigen::Vector3d &joints, Eigen::Matrix3Xd &jac);
 };

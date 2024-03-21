@@ -29,13 +29,16 @@ file(GLOB_RECURSE SOURCES core/*.cpp)
 list(APPEND INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/core ${CMAKE_CURRENT_SOURCE_DIR}/config ${pinocchio_INCLUDE_DIRS} ${IKFAST_DIR})
 
 add_subdirectory(${IKFAST_DIR})
-add_library(${PROJECT_NAME} ${SOURCES})
+# BUG: getJacobian ref can't be found if it is SHARED
+add_library(${PROJECT_NAME} SHARED ${SOURCES})
 target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDES}
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/core>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/config>
 )
 target_link_libraries(${PROJECT_NAME} PUBLIC pinocchio::pinocchio ${IKFAST_LIB_NAME})
-
+# Export all symbols of the shared library (not hidden)
+# set_property(TARGET ${PROJECT_NAME} PROPERTY VISIBILITY_INLINES_HIDDEN 0)
+set_target_properties(${PROJECT_NAME} PROPERTIES CXX_VISIBILITY_PRESET open)
 
 # Tests
 file(GLOB_RECURSE TEST_SOURCES test/*.cpp)

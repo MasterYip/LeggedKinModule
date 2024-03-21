@@ -28,9 +28,10 @@ int main()
         else
             printf("IK: no solution\n");
 
-        Eigen::Matrix3Xd jacobian;
-        elair.getJacobian(joints, jacobian, leg_index);
-        std::cout << "Jacobian:\n"
-             << jacobian << std::endl;
+        // Eigen::Matrix3Xd jacobian;
+        // elair.getJacobian(joints, jacobian, leg_index);
+        // std::cout << "Jacobian:\n"
+        //      << jacobian << std::endl;
+        elair.testhidden();
     }
 }

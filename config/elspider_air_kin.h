@@ -47,10 +47,10 @@ class ElSpiderKin
         for (uint i = 0; i < 6; i++)
         {
             legs_[i].setJointLimits(joint_limits);
-            forwardKinConstraint(Eigen::Vector3d((joint_limits[0] + joint_limits[1]) / 2.0,
-                                                 (joint_limits[2] + joint_limits[3]) / 2.0,
-                                                 (joint_limits[4] + joint_limits[5]) / 2.0),
-                                 approx, i);
+            forwardKinConstraint_test(Eigen::Vector3d((joint_limits[0] + joint_limits[1]) / 2.0,
+                                                      (joint_limits[2] + joint_limits[3]) / 2.0,
+                                                      (joint_limits[4] + joint_limits[5]) / 2.0),
+                                      approx, i);
             legs_[i].setIKApproxPoint(approx);
         }
     };
@@ -74,12 +74,17 @@ class ElSpiderKin
     {
         return legs_[leg_index].forwardKin(joints, pos);
     };
-    bool forwardKinConstraint(const Eigen::Vector3d &joints, Eigen::Vector3d &pos, uint leg_index)
+    bool forwardKinConstraint_test(const Eigen::Vector3d &joints, Eigen::Vector3d &pos,
+                                   uint leg_index)
     {
-        return legs_[leg_index].forwardKinConstraint(joints, pos);
+        return legs_[leg_index].forwardKinConstraint_test(joints, pos);
     };
     bool getJacobian(const Eigen::Vector3d &joints, Eigen::Matrix3Xd &jac, uint leg_index)
     {
         return legs_[leg_index].getJacobian(joints, jac);
+    };
+    bool testhidden()
+    {
+        return legs_[0].testhidden();
     };
 };
