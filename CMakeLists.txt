@@ -2,10 +2,10 @@ cmake_minimum_required(VERSION 3.0.2)
 
 project(LeggedKinModule 
     LANGUAGES CXX
-    VERSION 0.1.0)
+    VERSION 1.0.0)
 
 # Settings
-set(SHARED_VERSION ${PROJECT_VERSION_MAJOR})
+set(SHARED_VERSION ${PROJECT_VERSION_MAJOR}) # Only major will affect the shared library version
 set(LIB_TYPE SHARED) # SHARED or STATIC
 set(BUILD_GTESTING OFF)
 

@@ -74,6 +74,11 @@ class ElSpiderKin
     {
         return legs_[leg_index].forwardKin(joints, pos);
     };
+    bool forwardKin(const Eigen::Vector3d &joints, Eigen::Vector3d &pos, uint leg_index,
+                    int joint_idx)
+    {
+        return legs_[leg_index].forwardKin(joints, joint_idx, pos);
+    };
     bool forwardKinConstraint(const Eigen::Vector3d &joints, Eigen::Vector3d &pos, uint leg_index)
     {
         return legs_[leg_index].forwardKinConstraint(joints, pos);
@@ -81,5 +86,10 @@ class ElSpiderKin
     bool getJacobian(const Eigen::Vector3d &joints, Eigen::Matrix3Xd &jac, uint leg_index)
     {
         return legs_[leg_index].getJacobian(joints, jac);
+    };
+    bool getJacobian(const Eigen::Vector3d &joints, Eigen::Matrix3Xd &jac, uint leg_index,
+                     int joint_idx)
+    {
+        return legs_[leg_index].getJacobian(joints, joint_idx, jac);
     };
 };

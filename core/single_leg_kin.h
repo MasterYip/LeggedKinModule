@@ -23,6 +23,7 @@ class SingleLegKin
   private:
     pinocchio::Model model_;
     pinocchio::Data data_;
+    std::vector<std::string> joint_names_ = {"RF_HAA", "RF_HFE", "RF_KFE"};
     std::string end_effector_name_ = "RF_FOOT";
     // Origin Calib: move the origin of the leg to the origin of the base frame
     Eigen::Vector3d origin_calib_ = Eigen::Vector3d::Zero(); // leg origin in base frame
@@ -81,6 +82,7 @@ class SingleLegKin
 
     bool checkJointLimits(const Eigen::Vector3d &joints);
     void constraintFiltering(std::vector<Eigen::Vector3d> &sols);
+
     // Kinematics
     /* IK - multiple solutions */
     bool inverseKin(const Eigen::Vector3d &pos, std::vector<Eigen::Vector3d> &sols,
@@ -91,8 +93,22 @@ class SingleLegKin
     /* IK with constraint - first solution */
     bool inverseKinConstraint(const Eigen::Vector3d &pos, Eigen::Vector3d &sol, bool approx = true,
                               uint iter = 10);
+    /* FK */
     bool forwardKin(const Eigen::Vector3d &joints, Eigen::Vector3d &pos);
+    bool forwardKin(const Eigen::Vector3d &joints, int joint_idx, Eigen::Vector3d &pos);
     bool forwardKinConstraint(const Eigen::Vector3d &joints, Eigen::Vector3d &pos);
-    
+
+    // Jacobian
     bool getJacobian(const Eigen::Vector3d &joints, Eigen::Matrix3Xd &jac);
+
+    /**
+     * @brief Get joint jacobian given the joint frame index
+     * 
+     * @param joints 
+     * @param joint_idx Joint frame select (0: RF_HAA, 1: RF_HFE, 2: RF_KFE)
+     * @param jac 
+     * @return true 
+     * @return false 
+     */
+    bool getJacobian(const Eigen::Vector3d &joints, int joint_idx, Eigen::Matrix3Xd &jac);
 };

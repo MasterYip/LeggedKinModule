@@ -153,12 +153,21 @@ bool SingleLegKin::forwardKin(const Eigen::Vector3d &joints, Eigen::Vector3d &po
     return true;
 }
 
+bool SingleLegKin::forwardKin(const Eigen::Vector3d &joints, int joint_idx, Eigen::Vector3d &pos)
+{
+    if (joint_idx < 0 || joint_idx > 2)
+        return false;
+    pinocchio::forwardKinematics(model_, data_, joint_dir_mat_ * joints);
+    pos = pinocchio::updateFramePlacement(model_, data_, model_.getFrameId(joint_names_[joint_idx]))
+              .translation();
+    pos = rot_offset_ * mirror_offset_mat_ * (pos - origin_calib_) + pos_offset_;
+    return true;
+}
+
 bool SingleLegKin::forwardKinConstraint(const Eigen::Vector3d &joints, Eigen::Vector3d &pos)
 {
     if (!checkJointLimits(joint_dir_mat_ * joints))
-    {
         return false;
-    }
     return forwardKin(joints, pos);
 }
 
@@ -175,5 +184,16 @@ bool SingleLegKin::getJacobian(const Eigen::Vector3d &joints, Eigen::Matrix3Xd &
     pinocchio::getFrameJacobian(model_, data_, model_.getFrameId(end_effector_name_),
                                 pinocchio::LOCAL_WORLD_ALIGNED, J);
     jac = rot_offset_ * mirror_offset_mat_ * J.topRows(3) * joint_dir_mat_;
+    return true;
+}
+
+bool SingleLegKin::getJacobian(const Eigen::Vector3d &joints, int joint_idx, Eigen::Matrix3Xd &jac)
+{
+    if (!getJacobian(joints, jac))
+        return false;
+    if (joint_idx < 0 || joint_idx > 2)
+        return false;
+    for (int i = joint_idx; i < 3; i++)
+        jac.col(i) = Eigen::Vector3d::Zero();
     return true;
 }
