@@ -23,7 +23,7 @@ class SingleLegKin
   private:
     pinocchio::Model model_;
     pinocchio::Data data_;
-    std::vector<std::string> joint_names_ = {"RF_HAA", "RF_HFE", "RF_KFE"};
+    std::vector<std::string> joint_names_ = {"RF_HAA", "RF_HFE_Coll", "RF_KFE_Coll"};
     std::string end_effector_name_ = "RF_FOOT";
     // Origin Calib: move the origin of the leg to the origin of the base frame
     Eigen::Vector3d origin_calib_ = Eigen::Vector3d::Zero(); // leg origin in base frame

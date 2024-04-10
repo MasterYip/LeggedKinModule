@@ -92,6 +92,37 @@
     <axis xyz="0 0 1" />
     <limit lower="-0.5233" upper="3.14" effort="33.5" velocity="21" />
   </joint>
+  <!-- HFE Collision Ball -->
+  <joint name="RF_HFE_Coll" type="fixed">
+    <origin xyz="-0.02 -0.14999 -0.045056" rpy="3.1416 -1.5708 0" />
+    <parent link="RF_HIP" />
+    <child link="RF_HFE_CollBall" />
+    <axis xyz="0 0 1" />
+    <limit lower="-0.5233" upper="3.14" effort="33.5" velocity="21" />
+  </joint>
+  <link name = "RF_HFE_CollBall">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.0001" />
+      <inertia ixx="0.00000001" ixy="0" ixz="0" iyy="0.00000001" iyz="0" izz="0.00000001" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.12"/>
+      </geometry>
+      <material name="black">
+        <color rgba="1.0 0.5 0 0.5" />
+      </material>
+    </visual>
+    <!-- <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.05"/>
+      </geometry>
+    </collision> -->
+  </link>
+
   <link name="RF_SHANK">
     <inertial>
       <origin xyz="0.00000000 -0.07024046 -0.00923673" rpy="0 0 0" />
@@ -121,6 +152,37 @@
     <axis xyz="0 0 1" />
     <limit lower="-0.6978" upper="3.925" effort="33.5" velocity="21" />
   </joint>
+  <!-- KFE Collision Ball -->
+  <joint name="RF_KFE_Coll" type="fixed">
+    <origin xyz="0.13 0 -0.02" rpy="3.1416 0 1.5708" />
+    <parent link="RF_THIGH" />
+    <child link="RF_KFE_CollBall" />
+    <axis xyz="0 0 1" />
+    <limit lower="-0.6978" upper="3.925" effort="33.5" velocity="21" />
+  </joint>
+  <link name = "RF_KFE_CollBall">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.0001" />
+      <inertia ixx="0.00000001" ixy="0" ixz="0" iyy="0.00000001" iyz="0" izz="0.00000001" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.12"/>
+      </geometry>
+      <material name="black">
+        <color rgba="1.0 0.5 0 0.5" />
+      </material>
+    </visual>
+    <!-- <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.05"/>
+      </geometry>
+    </collision> -->
+  </link>
+
   <link name="RF_FOOT">
     <inertial>
       <origin xyz="0.00000000 -0.0070918 0.00000000" rpy="0 0 0" />
