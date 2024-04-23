@@ -92,4 +92,14 @@ class ElSpiderKin
     {
         return legs_[leg_index].getJacobian(joints, joint_idx, jac);
     };
+    bool getJacobianTimeVariation(const Eigen::Vector3d &joints, const Eigen::Vector3d &joint_vel,
+                                  Eigen::Matrix3Xd &jac_dot, uint leg_index)
+    {
+        return legs_[leg_index].getJacobianTimeVariation(joints, joint_vel, jac_dot);
+    }
+    bool getJacobianTimeVariation(const Eigen::Vector3d &joints, const Eigen::Vector3d &joint_vel,
+                                  Eigen::Matrix3Xd &jac_dot, uint leg_index, int joint_idx)
+    {
+        return legs_[leg_index].getJacobianTimeVariation(joints, joint_vel, joint_idx, jac_dot);
+    };
 };

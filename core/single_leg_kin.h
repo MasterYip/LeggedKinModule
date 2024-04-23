@@ -99,6 +99,15 @@ class SingleLegKin
     bool forwardKinConstraint(const Eigen::Vector3d &joints, Eigen::Vector3d &pos);
 
     // Jacobian
+
+    /**
+     * @brief Get the Jacobian w.r.t. the end effector
+     * 
+     * @param joints 
+     * @param jac 
+     * @return true 
+     * @return false 
+     */
     bool getJacobian(const Eigen::Vector3d &joints, Eigen::Matrix3Xd &jac);
 
     /**
@@ -111,4 +120,10 @@ class SingleLegKin
      * @return false 
      */
     bool getJacobian(const Eigen::Vector3d &joints, int joint_idx, Eigen::Matrix3Xd &jac);
+
+    bool getJacobianTimeVariation(const Eigen::Vector3d &joints, const Eigen::Vector3d &vel,
+                                  Eigen::Matrix3Xd &jac_dot);
+
+    bool getJacobianTimeVariation(const Eigen::Vector3d &joints, const Eigen::Vector3d &vel,
+                                  int joint_idx, Eigen::Matrix3Xd &jac_dot);
 };

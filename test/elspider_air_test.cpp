@@ -38,5 +38,18 @@ int main()
             elair.getJacobian(joints, jacobian, leg_index, joint_idx);
             std::cout << "Joint" << joint_idx << " Jacobian:\n" << jacobian << std::endl;
         }
+
+        // Jacobian Time Variation
+        Eigen::Matrix3Xd jacobian_dot;
+        Eigen::Vector3d joint_vel(1, 1, 1);
+        std::cout << "Jacobain Time Variation: (default joint velocity: 1, 1, 1)\n";
+        elair.getJacobianTimeVariation(joints, joint_vel, jacobian_dot, leg_index);
+        std::cout << "EE JacobianDot:\n"  << jacobian_dot << std::endl;
+
+        for (int joint_idx = 0; joint_idx < 3; joint_idx++)
+        {
+            elair.getJacobianTimeVariation(joints, joint_vel, jacobian_dot, leg_index, joint_idx);
+            std::cout << "Joint" << joint_idx << " JacobianDot:\n" << jacobian_dot << std::endl;
+        }
     }
 }

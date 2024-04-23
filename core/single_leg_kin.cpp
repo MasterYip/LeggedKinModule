@@ -189,11 +189,51 @@ bool SingleLegKin::getJacobian(const Eigen::Vector3d &joints, Eigen::Matrix3Xd &
 
 bool SingleLegKin::getJacobian(const Eigen::Vector3d &joints, int joint_idx, Eigen::Matrix3Xd &jac)
 {
-    if (!getJacobian(joints, jac))
-        return false;
     if (joint_idx < 0 || joint_idx > 2)
         return false;
+
+    pinocchio::computeJointJacobians(model_, data_, joint_dir_mat_ * joints);
+    Eigen::MatrixXd J(6, 3);
+    pinocchio::getFrameJacobian(model_, data_, model_.getFrameId(joint_names_[joint_idx]),
+                                pinocchio::LOCAL_WORLD_ALIGNED, J);
+    jac = rot_offset_ * mirror_offset_mat_ * J.topRows(3) * joint_dir_mat_;
+
     for (int i = joint_idx; i < 3; i++)
         jac.col(i) = Eigen::Vector3d::Zero();
+    return true;
+}
+
+bool SingleLegKin::getJacobianTimeVariation(const Eigen::Vector3d &joints,
+                                            const Eigen::Vector3d &vel, Eigen::Matrix3Xd &jac_dot)
+{
+    pinocchio::computeJointJacobiansTimeVariation(model_, data_, joint_dir_mat_ * joints,
+                                                  joint_dir_mat_ * vel);
+    Eigen::MatrixXd dJ(6, 3);
+    pinocchio::getFrameJacobianTimeVariation(model_, data_,
+                                             model_.getFrameId(end_effector_name_),
+                                             pinocchio::LOCAL_WORLD_ALIGNED, dJ);
+
+    jac_dot = rot_offset_ * mirror_offset_mat_ * dJ.topRows(3) * joint_dir_mat_;
+    return true;
+
+}
+
+bool SingleLegKin::getJacobianTimeVariation(const Eigen::Vector3d &joints,
+                                            const Eigen::Vector3d &vel, int joint_idx,
+                                            Eigen::Matrix3Xd &jac_dot)
+{
+    if (joint_idx < 0 || joint_idx > 2)
+        return false;
+    pinocchio::computeJointJacobiansTimeVariation(model_, data_, joint_dir_mat_ * joints,
+                                                  joint_dir_mat_ * vel);
+    Eigen::MatrixXd dJ(6, 3);
+    pinocchio::getFrameJacobianTimeVariation(model_, data_,
+                                             model_.getFrameId(joint_names_[joint_idx]),
+                                             pinocchio::LOCAL_WORLD_ALIGNED, dJ);
+
+    jac_dot = rot_offset_ * mirror_offset_mat_ * dJ.topRows(3) * joint_dir_mat_;
+
+    for (int i = joint_idx; i < 3; i++)
+        jac_dot.col(i) = Eigen::Vector3d::Zero();
     return true;
 }
